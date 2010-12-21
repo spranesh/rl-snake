@@ -1,4 +1,27 @@
-* Reinforcement Learning applied to the Snake Game
+Dependencies
+============
+  * pygame
+  * nosetests
+
+Running
+=======
+
+Run 
+
+  $ nosetests 
+
+from the root directory to run tests.
+
+Run
+
+  $ python main.py [optional maze file]
+
+to start playing snake!
+
+
+
+Reinforcement Learning applied to the Snake Game
+================================================
 
 Directory Structure:
   * rl_agents - consists of rl-agents
