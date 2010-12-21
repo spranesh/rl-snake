@@ -1,0 +1,39 @@
+* Reinforcement Learning applied to the Snake Game
+
+Directory Structure:
+  * rl_agents - consists of rl-agents
+  * state_mappers - consists of state-mappers
+  * snake_game - consists of logic required for the snake game
+
+Classes/Modules:
+  GameState: The current state of the game
+    * Position and length of the snake.
+    * Position of the Fruit.
+    * Positions of the wall(s).
+    * Size of the board.
+
+  SnakeLogic: Contains the logic for the entire game
+    * The current game state.
+    * Function to get the state.
+    * Function to get the current score.
+    * Function to move the snake.
+    * Function to check if the snake is alive.
+
+  MazeConfReader: Reads Configurations from maze files to produce an initial
+  game state.
+    * A default game state.
+    * Read Maze File.
+
+  PyGameArtist: Draws the current state using PyGame.
+    * Function to render the current state of the game.
+
+  StateMapper: 
+    Abstract class that takes a game state, and returns another (hashable)
+    state, with a list of possible moves.
+
+  Agent:
+    * Function to perform an action on a state.
+    * Function to update it's Q/V values.
+    * Function to dump all learning so far (save current learning state)
+    * Can be initialised with old Q/V values.
+  
