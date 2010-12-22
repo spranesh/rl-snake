@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+import agent_interact
+import mainloop
 import keyb_interact
 import snake_game.maze_conf_reader
 import snake_game.pygame_artist
 import snake_game.snake_logic
-import gui_mainloop
 
 import optparse
 import os
@@ -18,7 +19,7 @@ def ParseCommandLineOptions(args):
 
   fps_options_group = optparse.OptionGroup(parser,
       "Play the game yourself.")
-  fps_options_group.add_option("-p", "--fps", 
+  fps_options_group.add_option("-f", "--fps", 
       action="store_true", dest="fps",
       help="Play! [Default: Off]")
   parser.add_option_group(fps_options_group)
@@ -31,14 +32,14 @@ def ParseCommandLineOptions(args):
       help = "The RL agent " + default_help_string)
   rl_options_group.add_option("-s", "--state_mapper", 
       type="string", dest="state_mapper", 
-      default="state_mapper.quadrant_view.QuadrantView",
+      default="state_mappers.quadrant_view.QuadrantView",
       help= "The State Mapper " + default_help_string)
   rl_options_group.add_option("-t", "--use-trained-file", 
-      type="string", dest="use_trained_file", 
+      type="string", dest="trained_filename", 
       default="",
       help= "Restore the old (previously trained) Q/V values from a file ")
   rl_options_group.add_option("-w", "--dump-in-file", 
-      type="string", dest="dump_in_file",
+      type="string", dest="dump_filename",
       default="",
       help= "Store the Q/V values in the dump file every few moves \
       [Default: train/[chosen statemapper].[chosen agent].[time]]")
@@ -49,6 +50,10 @@ def ParseCommandLineOptions(args):
   parser.add_option("-n", "--no_graphics", 
       action="store_true", dest="no_graphics",
       help = "Turn off Graphics [Default: Off]")
+  parser.add_option("-p", "--speed", 
+      type="int", dest="speed", default=10,
+      help = "Speed of the game (higher is faster). Use 0 for infinity. "
+      + default_help_string)
 
   (options, args) = parser.parse_args(args)
 
@@ -60,8 +65,8 @@ def ParseCommandLineOptions(args):
 
 
   # Fill in the dump file if it is empty.
-  if options.dump_in_file is "":
-    options.dump_in_file = "train/%s-%s-%s.dump"%(
+  if options.dump_filename is "":
+    options.dump_filename = "train/%s-%s-%s.dump"%(
         options.state_mapper,
         options.agent,
         time.strftime("%d-%m:%H:%M"))
@@ -74,6 +79,15 @@ def Main():
   pygame.init()
 
   options = ParseCommandLineOptions(sys.argv[1:])
+
+  if not options.fps:
+    options.speed = 0
+
+  # Figure out the speed
+  if options.speed is 0:
+    delay = 0
+  else:
+    delay = 1000/options.speed
 
   # Set up a function to create a new snake logic.
   if options.maze_filename:
@@ -95,11 +109,16 @@ def Main():
   # If fps, start the gui mainloop
   if options.fps:
     interact = keyb_interact.KeyBInteract()
-    return gui_mainloop.GUIMainLoop(interact, artist, new_sl_function)
-    
-  sys.stderr.write("""Oops! The RL algorithms havent been implemented yet.
-    Run with -p!\n""")
-  sys.exit(1)
+    return mainloop.MainLoop(interact, artist, new_sl_function, delay)
+
+  else:
+    interact = agent_interact.AgentInteract(options.agent, options.state_mapper, 
+        options.trained_filename, options.dump_filename, backup_num_moves = 100)
+    return mainloop.MainLoop(interact, artist, new_sl_function, delay)
+
+  # sys.stderr.write("""Oops! The RL algorithms havent been implemented yet.
+  #   Run with -p!\n""")
+  # sys.exit(1)
 
 if __name__ == '__main__':
   Main()

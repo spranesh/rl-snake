@@ -47,7 +47,7 @@ class SnakeLogic:
 
   def Move(self, direction):
     if direction == directions.Reverse(self.state.direction):
-      direction = directions.Reverse(self.state.direction)
+      direction = self.state.direction
 
     head = self.state.snake_position[0]
     self.state.snake_position.insert(0, 
