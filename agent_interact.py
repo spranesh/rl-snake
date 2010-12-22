@@ -62,29 +62,25 @@ class AgentInteract(interact.Interact):
     state_ = self.state_mapper.TransformState(sl)
     move_ = self.agent.Act(state_, self.state_mapper.GetAllowedMoves(sl),
         self.reward, self.episode_ended)
-    # reverse_direction = snake_game.directions.Reverse(sl.state.direction)
     move = self.state_mapper.TransformMove(sl, move_)
 
     # Make the move
     sl.Move(move)
 
     # If nothing happens
-    self.reward = -1
+    self.reward = -1 
 
-    # Handle the case we died
+    # Handle the case the snake died
     if not sl.IsAlive():
       self.reward = -1000
       self.episode_ended = True
+      print
     else:
       self.episode_ended = False
 
     # If we ate a fruit
     if sl.WasFruitEaten():
-      self.reward = 100
+      self.reward = 500
+      print '*',
     
-    # If the bot made the reverse direction move.
-    # if move == reverse_direction:
-    #  self.reward -= 1
-
-    print self.reward
     return move

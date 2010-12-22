@@ -7,7 +7,7 @@ import directions
 import sys
 
 class GameState:
-  def __init__(self, size, initial_length=3, num_fruits=5):
+  def __init__(self, size, initial_length=3, num_fruits=1):
     if initial_length >= size/2:
       sys.stderr.write("Too large an initial size. No point playing. Bye!")
       sys.exit(1)

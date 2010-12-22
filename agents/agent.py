@@ -3,6 +3,7 @@ Generic Value Based agent
 """
 
 import cPickle
+import math
 import random
 import sys
 
@@ -12,17 +13,19 @@ class Agent():
   """
   Q = {}
 
-  def __init__(self, trained_file = "", gamma = 0.9, alpha = 0.8, e = 0.1):
+  def __init__(self, trained_file = "", gamma = 0.9, alpha = 0.8, e = 0.3):
     self.gamma = gamma
     self.alpha = alpha
     self.e = e
     self.old_state = None
     self.old_action = None
     self.Q = {}
+    self.N = {}
+    self.count = 0
 
     if trained_file is not "":
       try:
-        self.Q = cPickle.load(open(trained_file))
+        (self.e, self.count, self.Q) = cPickle.load(open(trained_file))
       except IOError, e:
         sys.stderr.write(("File " + trained_file + " not found. \n"))
         sys.exit(1)
@@ -34,11 +37,16 @@ class Agent():
     raise NotImplemented()
 
   def Act(self, state, actions, reward, episode_ended):
+    self.count += 1
+    if self.count == 10000:
+      self.e -= self.e/5
+      self.count = 1000
+
     # epsilon-greedy
     if not self.Q.has_key(state):
       self.Q[state] = {}
       for action in actions:
-        self.Q[state][action] = 0
+        self.Q[state][action] = 10 # Initially optimistic
 
     # Explore
     if random.random() < self.e:
@@ -63,6 +71,6 @@ class Agent():
 
   def WriteKnowledge(self, filename):
     fp = open(filename, "w")
-    cPickle.dump(self.Q, fp)
+    cPickle.dump((self.e, self.count, self.Q), fp)
     fp.close()
     return

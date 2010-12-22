@@ -73,7 +73,6 @@ class SnakeLogic:
     # larger, and create a new fruit. Otherwise, we move the snake one step
     # by popping the last coordinate.
     if self.__WasFruitEaten():
-      print "Fruit Eaten"
       self.was_fruit_eaten = True
       i = self.state.fruits.index(head)
       self.state.fruits[i] = self.__CreateNewFruit()

@@ -41,14 +41,18 @@ class QuadrantView(state_mapper.StateMapper):
       square_description.append(self.__SquareDescription(sl, n))
 
     fruit = sl.state.fruits[0]
-    (x_, y_) = (fruit[0] - head[0], fruit[1] - head[1])
+    (x, y) = (fruit[0] - head[0], fruit[1] - head[1])
 
-    quadrant = 1
-    if x_ <= 0 and y_ >= 0: quadrant = 2
-    if x_ <= 0 and y_ <= 0: quadrant = 3
-    if x_ >= 0 and y_ <= 0: quadrant = 4
+    if x == 0: qx = 0
+    elif x < 0: qx = -1
+    else: qx = 1
+
+    if y == 0: qy = 0
+    elif y < 0: qy = -1
+    else: qy = 1
+
     return (square_description[0], square_description[1], 
-        square_description[2], quadrant)
+        square_description[2], qx, qy)
 
   def GetAllowedMoves(self, sl):
     return ['GO_LEFT', 'GO_RIGHT', 'GO_STRAIGHT']
