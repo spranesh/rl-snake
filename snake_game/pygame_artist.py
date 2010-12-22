@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
+import artist
+
 import os
 
 import pygame
 
-class PyGameArtist:
+class PyGameArtist(artist.Artist):
   def __init__(self, size, pixel_width=12):
-    os.environ["SDL_VIDEO_CENTERED"] = "1"
-    pygame.init()
-
     self.size = size*pixel_width
     pygame.display.set_caption("Snake")
     self.screen = pygame.display.set_mode((self.size,

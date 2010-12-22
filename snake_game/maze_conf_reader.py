@@ -14,13 +14,13 @@ import sys
     }
 """
 
-def GetDefaultConfiguration():
+def GetNewStateAccordingToDefaultConfiguration():
   return game_state.GameState(20)
 
 
-def ReadConfigurationFile(filename):
+def GetNewStateAccordingToConfigurationFile(filename):
   if not filename:
-    return GetDefaultConfiguration()
+    return GetNewStateAccordingToDefaultConfiguration()
 
   try:
     config_fp = open(filename).read()
@@ -28,9 +28,9 @@ def ReadConfigurationFile(filename):
     sys.stderr.write(("Configuration File %s not found"%(filename)))
     sys.exit(1)
 
-  return ReadConfigurationString(config_fp)
+  return GetNewStateAccordingToString(config_fp)
 
-def ReadConfigurationString(config_data):
+def GetNewStateAccordingToString(config_data):
 
   config = json.loads(config_data)
 

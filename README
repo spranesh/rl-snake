@@ -14,7 +14,7 @@ from the root directory to run tests.
 
 Run
 
-  $ python main.py [optional maze file]
+  $ python main.py -h
 
 to start playing snake!
 
