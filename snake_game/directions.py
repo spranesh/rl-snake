@@ -7,6 +7,9 @@ DOWN = 'DOWN'
 LEFT = 'LEFT'
 RIGHT = 'RIGHT'
 
+def GetAllDirections():
+  return [UP, DOWN, LEFT, RIGHT]
+
 def Reverse(direction):
   return {UP: DOWN,
           DOWN: UP,

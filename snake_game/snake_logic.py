@@ -45,9 +45,16 @@ class SnakeLogic:
         continue
       return (x, y)
 
+  def GetAllowedMoves(self):
+    d = direction.GetAllDirections()
+    d.remove(direction.Reverse(self.state.direction))
+    return d
+
   def Move(self, direction):
     if direction == directions.Reverse(self.state.direction):
-      direction = self.state.direction
+      # direction = self.state.direction
+      self.alive = False
+      return
 
     head = self.state.snake_position[0]
     self.state.snake_position.insert(0, 

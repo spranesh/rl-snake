@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import interact
+import snake_game.directions
 
 import sys
 
@@ -41,7 +42,7 @@ class AgentInteract(interact.Interact):
     self.state_mapper_class = DynamicImportMember(state_mapper_string)
     self.agent_class = DynamicImportMember(agent_string)
 
-    self.agent = self.agent_class(self.state_mapper_class(), 
+    self.agent = self.agent_class(self.state_mapper_class(snake_game.directions),
         self.trained_filename)
 
     self.move_counter = 0
