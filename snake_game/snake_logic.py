@@ -7,6 +7,7 @@ class SnakeLogic:
   def __init__(self, state):
     self.state = state
     self.alive = True
+    self.was_fruit_eaten = False
     for i in range(self.state.num_fruits - len(self.state.fruits)):
       self.state.fruits.append(self.__CreateNewFruit())
 
@@ -46,15 +47,15 @@ class SnakeLogic:
       return (x, y)
 
   def GetAllowedMoves(self):
-    d = direction.GetAllDirections()
-    d.remove(direction.Reverse(self.state.direction))
+    d = directions.GetAllDirections()
+    d.remove(directions.Reverse(self.state.direction))
     return d
 
   def Move(self, direction):
     if direction == directions.Reverse(self.state.direction):
-      # direction = self.state.direction
-      self.alive = False
-      return
+      direction = self.state.direction
+      # self.alive = False
+      # return
 
     head = self.state.snake_position[0]
     self.state.snake_position.insert(0, 
@@ -72,10 +73,13 @@ class SnakeLogic:
     # larger, and create a new fruit. Otherwise, we move the snake one step
     # by popping the last coordinate.
     if self.__WasFruitEaten():
+      print "Fruit Eaten"
+      self.was_fruit_eaten = True
       i = self.state.fruits.index(head)
       self.state.fruits[i] = self.__CreateNewFruit()
       self.state.snake_length += 1
     else:
+      self.was_fruit_eaten = False
       self.state.snake_position.pop()
     return
 
@@ -87,4 +91,7 @@ class SnakeLogic:
 
   def IsAlive(self):
     return self.alive
+
+  def WasFruitEaten(self):
+    return self.was_fruit_eaten
 

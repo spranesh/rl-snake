@@ -7,8 +7,7 @@ def MainLoop(interact, artist, new_sl_function, delay=100):
   sl = new_sl_function()
   while True:
     artist.Draw(sl)
-    move = interact.GetNextMove(sl)
-    sl.Move(move)
+    interact.PerformAndReturnNextMove(sl)
     pygame.time.wait(delay)
     if not sl.IsAlive():
       artist.Draw(sl)

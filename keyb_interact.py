@@ -6,7 +6,7 @@ import pygame
 import pygame.locals
 
 class KeyBInteract(interact.Interact):
-  def GetNextMove(self, sl):
+  def PerformAndReturnNextMove(self, sl):
     d = sl.state.direction
 
     for e in pygame.event.get():
@@ -21,4 +21,5 @@ class KeyBInteract(interact.Interact):
         d = D.LEFT
       if e.key == pygame.locals.K_RIGHT:
         d = D.RIGHT
+    sl.Move(d)
     return d

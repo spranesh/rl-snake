@@ -28,7 +28,7 @@ def ParseCommandLineOptions(args):
       "Make a reinforcement agent play the game.")
   rl_options_group.add_option("-a", "--agent", 
       type="string", dest="agent", 
-      default="rl_agents.q_learning.QLearning",
+      default="agents.q_learning.QLearning",
       help = "The RL agent " + default_help_string)
   rl_options_group.add_option("-s", "--state_mapper", 
       type="string", dest="state_mapper", 
@@ -79,9 +79,6 @@ def Main():
   pygame.init()
 
   options = ParseCommandLineOptions(sys.argv[1:])
-
-  if not options.fps:
-    options.speed = 0
 
   # Figure out the speed
   if options.speed is 0:

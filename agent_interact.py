@@ -35,25 +35,56 @@ class AgentInteract(interact.Interact):
       This interactor also makes the agent backup its knowledge every so many
       moves."""
   def __init__(self, agent_string, state_mapper_string, 
-      trained_filename, dump_file, backup_num_moves = 100):
+      trained_filename, dump_filename, backup_num_moves = 100):
     self.trained_filename = trained_filename
-    self.dump_file = dump_file
+    self.dump_filename = dump_filename
 
     self.state_mapper_class = DynamicImportMember(state_mapper_string)
     self.agent_class = DynamicImportMember(agent_string)
 
-    self.agent = self.agent_class(self.state_mapper_class(snake_game.directions),
-        self.trained_filename)
+    self.agent = self.agent_class(self.trained_filename)
+    self.state_mapper = self.state_mapper_class(snake_game.directions)
 
     self.move_counter = 0
     self.backup_num_moves = backup_num_moves
+
+    self.episode_ended = False
+    self.reward = 0
     return
 
-  def GenNextMove(self, sl):
+  def PerformAndReturnNextMove(self, sl):
     self.move_counter += 1
 
     if self.move_counter == self.backup_num_moves:
-      self.agent.WriteKnowledge(self.dump_file)
+      self.agent.WriteKnowledge(self.dump_filename)
       self.move_counter = 0
 
-    return self.agent.GetMove(sl)
+    state_ = self.state_mapper.TransformState(sl)
+    move_ = self.agent.Act(state_, self.state_mapper.GetAllowedMoves(sl),
+        self.reward, self.episode_ended)
+    # reverse_direction = snake_game.directions.Reverse(sl.state.direction)
+    move = self.state_mapper.TransformMove(sl, move_)
+
+    # Make the move
+    sl.Move(move)
+
+    # If nothing happens
+    self.reward = -1
+
+    # Handle the case we died
+    if not sl.IsAlive():
+      self.reward = -1000
+      self.episode_ended = True
+    else:
+      self.episode_ended = False
+
+    # If we ate a fruit
+    if sl.WasFruitEaten():
+      self.reward = 100
+    
+    # If the bot made the reverse direction move.
+    # if move == reverse_direction:
+    #  self.reward -= 1
+
+    print self.reward
+    return move
