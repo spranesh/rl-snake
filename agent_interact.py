@@ -69,7 +69,7 @@ class AgentInteract(interact.Interact):
     sl.Move(move)
 
     # If nothing happens
-    self.reward = -1 
+    self.reward = -10
 
     # Handle the case the snake died
     if not sl.IsAlive():
