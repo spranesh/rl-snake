@@ -38,6 +38,11 @@ def ParseCommandLineOptions(args):
       type="string", dest="trained_filename", 
       default="",
       help= "Restore the old (previously trained) Q/V values from a file ")
+  rl_options_group.add_option("-e", "--epsilon", 
+      type="float", dest="epsilon", 
+      default=-1,
+      help= "Set an espilon for use in epsilon greedy. (-1 means use the \
+      method's default " + default_help_string)
   rl_options_group.add_option("-w", "--dump-in-file", 
       type="string", dest="dump_filename",
       default="",
@@ -110,8 +115,8 @@ def Main():
 
   else:
     interact = agent_interact.AgentInteract(options.agent, options.state_mapper, 
-        options.trained_filename, options.dump_filename, backup_num_moves =
-        1000)
+        options.trained_filename, options.dump_filename, options.epsilon,
+        backup_num_moves = 1000)
     return mainloop.MainLoop(interact, artist, new_sl_function, delay)
 
   # sys.stderr.write("""Oops! The RL algorithms havent been implemented yet.

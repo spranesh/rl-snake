@@ -35,14 +35,14 @@ class AgentInteract(interact.Interact):
       This interactor also makes the agent backup its knowledge every so many
       moves."""
   def __init__(self, agent_string, state_mapper_string, 
-      trained_filename, dump_filename, backup_num_moves = 10000):
+      trained_filename, dump_filename, epsilon, backup_num_moves = 10000):
     self.trained_filename = trained_filename
     self.dump_filename = dump_filename
 
     self.state_mapper_class = DynamicImportMember(state_mapper_string)
     self.agent_class = DynamicImportMember(agent_string)
 
-    self.agent = self.agent_class(self.trained_filename)
+    self.agent = self.agent_class(epsilon, self.trained_filename)
     self.state_mapper = self.state_mapper_class(snake_game.directions)
 
     self.move_counter = 0
@@ -73,7 +73,7 @@ class AgentInteract(interact.Interact):
 
     # Handle the case the snake died
     if not sl.IsAlive():
-      self.reward = -1000
+      self.reward = -100
       self.episode_ended = True
       # print
     else:

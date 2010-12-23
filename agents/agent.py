@@ -13,10 +13,13 @@ class Agent():
   """
   Q = {}
 
-  def __init__(self, trained_file = "", gamma = 0.9, alpha = 0.8, e = 0.3):
+  def __init__(self, epsilon, trained_file = "", gamma = 0.9, alpha = 0.8):
     self.gamma = gamma
     self.alpha = alpha
-    self.e = e
+    if epsilon == -1.0:
+      self.e = 0.3
+    else:
+      self.e = epsilon
     self.old_state = None
     self.old_action = None
     self.Q = {}
