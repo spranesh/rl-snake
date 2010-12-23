@@ -35,7 +35,8 @@ class AgentInteract(interact.Interact):
       This interactor also makes the agent backup its knowledge every so many
       moves."""
   def __init__(self, agent_string, state_mapper_string, 
-      trained_filename, dump_filename, epsilon, backup_num_moves = 10000):
+      trained_filename, dump_filename, epsilon, rewards,
+      backup_num_moves = 10000):
     self.trained_filename = trained_filename
     self.dump_filename = dump_filename
 
@@ -50,6 +51,15 @@ class AgentInteract(interact.Interact):
 
     self.episode_ended = False
     self.reward = 0
+
+    try:
+      self.fruit_reward, self.end_reward, self.nothing_reward = map(int,
+          rewards.split(":"))
+    except ValueError, e:
+      sys.stderr.write("Invalid reward string: " + rewards)
+      sys.stderr.write(e)
+      sys.exit(1)
+
     return
 
   def PerformAndReturnNextMove(self, sl):
@@ -69,11 +79,11 @@ class AgentInteract(interact.Interact):
     sl.Move(move)
 
     # If nothing happens
-    self.reward = -10
+    self.reward = self.nothing_reward
 
     # Handle the case the snake died
     if not sl.IsAlive():
-      self.reward = -100
+      self.reward = self.end_reward
       self.episode_ended = True
       # print
     else:
@@ -81,7 +91,7 @@ class AgentInteract(interact.Interact):
 
     # If we ate a fruit
     if sl.WasFruitEaten():
-      self.reward = 500
+      self.reward = self.fruit_reward
       # print '*',
     
     return move

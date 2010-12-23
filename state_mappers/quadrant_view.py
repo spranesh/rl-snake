@@ -37,12 +37,12 @@ class QuadrantView(state_mapper.StateMapper):
     The Quandrant View class maps the snake board as follows:
 
       * The resultant view is RELATIVE to the snake's head.
-      * It returns a five tuple
-        + The first four elements of the pair form a description vector
+      * It returns a five-tuple
+        + The first three elements of the pair form a description vector
           indicating whether there is a wall adjacent to the snake in each of
           the allowed directions.
-        + The fifth element indicates which quadrant the fruit is in. This
-          can take on one of four possible values for each of the four
+        + The fourth and fifth elements indicates which quadrant the fruit is
+          in. This can take on one of four possible values for each of the four
           quadrants.
   """
 

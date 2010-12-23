@@ -34,6 +34,15 @@ def ParseCommandLineOptions(args):
       type="string", dest="state_mapper", 
       default="state_mappers.quadrant_view.QuadrantView",
       help= "The State Mapper " + default_help_string)
+  rl_options_group.add_option("-r", "--rewards", 
+      type="string", dest="rewards",
+      default="500:-100:-10",
+      help= "The rewards that you want to give the agent. \
+          The string consists of three values separated by colons. \
+          The first denotes the reward when the fruit is eaten, the second \
+          when the game ends, and the third when neither of the above \
+          happens."
+          + default_help_string)
   rl_options_group.add_option("-t", "--use-trained-file", 
       type="string", dest="trained_filename", 
       default="",
@@ -116,7 +125,7 @@ def Main():
   else:
     interact = agent_interact.AgentInteract(options.agent, options.state_mapper, 
         options.trained_filename, options.dump_filename, options.epsilon,
-        backup_num_moves = 1000)
+        options.rewards, backup_num_moves = 1000)
     return mainloop.MainLoop(interact, artist, new_sl_function, delay)
 
   # sys.stderr.write("""Oops! The RL algorithms havent been implemented yet.
