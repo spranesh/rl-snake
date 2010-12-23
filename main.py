@@ -110,7 +110,8 @@ def Main():
 
   else:
     interact = agent_interact.AgentInteract(options.agent, options.state_mapper, 
-        options.trained_filename, options.dump_filename, backup_num_moves = 100)
+        options.trained_filename, options.dump_filename, backup_num_moves =
+        1000)
     return mainloop.MainLoop(interact, artist, new_sl_function, delay)
 
   # sys.stderr.write("""Oops! The RL algorithms havent been implemented yet.

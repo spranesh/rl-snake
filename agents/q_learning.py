@@ -10,8 +10,8 @@ class QLearning(agent.Agent):
   """
 
   def UpdateQ(self, state, action, state_, action_, reward, explore):
-    if explore:
-      return
+    # if explore:
+    #   return
     if not state:
       return
 

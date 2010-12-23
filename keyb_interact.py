@@ -8,7 +8,6 @@ import pygame.locals
 class KeyBInteract(interact.Interact):
   def PerformAndReturnNextMove(self, sl):
     d = sl.state.direction
-
     for e in pygame.event.get():
       if e.type is not pygame.locals.KEYDOWN:
         return sl.state.direction

@@ -35,7 +35,7 @@ class AgentInteract(interact.Interact):
       This interactor also makes the agent backup its knowledge every so many
       moves."""
   def __init__(self, agent_string, state_mapper_string, 
-      trained_filename, dump_filename, backup_num_moves = 100):
+      trained_filename, dump_filename, backup_num_moves = 10000):
     self.trained_filename = trained_filename
     self.dump_filename = dump_filename
 
@@ -56,6 +56,7 @@ class AgentInteract(interact.Interact):
     self.move_counter += 1
 
     if self.move_counter == self.backup_num_moves:
+      print self.move_counter
       self.agent.WriteKnowledge(self.dump_filename)
       self.move_counter = 0
 
@@ -74,13 +75,13 @@ class AgentInteract(interact.Interact):
     if not sl.IsAlive():
       self.reward = -1000
       self.episode_ended = True
-      print
+      # print
     else:
       self.episode_ended = False
 
     # If we ate a fruit
     if sl.WasFruitEaten():
       self.reward = 500
-      print '*',
+      # print '*',
     
     return move

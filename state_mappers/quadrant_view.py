@@ -2,6 +2,36 @@
 
 import state_mapper
 
+def SigNum(x):
+  if x < 0:
+    return -1
+  if x > 0:
+    return 1
+  else: return 0
+
+def GetQuadrant(coord):
+  (sign_x, sign_y) = (SigNum(coord[0]), SigNum(coord[1]))
+
+  if sign_x == 0: qx = 0
+  elif sign_x == 1: qx = 1
+  else: qx = -1
+
+  if sign_y == 0: qy = 0
+  elif sign_y == 1: qy = 1
+  else: qy = -1
+
+  return (qx, qy)
+  
+def TransformQuadrantBasedOnDirection(coord, d, directions):
+  # Transform it relative to the snake
+  (x, y) = coord
+
+  if d == directions.LEFT:  (x, y) = ( y, -x)
+  if d == directions.RIGHT: (x, y) = (-y,  x)
+  if d == directions.DOWN:  (x, y) = (-x, -y)
+
+  return GetQuadrant((x, y))
+
 class QuadrantView(state_mapper.StateMapper):
   """ 
     The Quandrant View class maps the snake board as follows:
@@ -41,18 +71,23 @@ class QuadrantView(state_mapper.StateMapper):
       square_description.append(self.__SquareDescription(sl, n))
 
     fruit = sl.state.fruits[0]
+
+    # print "head: ", head, "fruit: ", fruit
+
+    # The state's y axes is oriented in the opposite direction.
+    head = (head[0], -head[1])
+    fruit = (fruit[0], -fruit[1])
+
     (x, y) = (fruit[0] - head[0], fruit[1] - head[1])
 
-    if x == 0: qx = 0
-    elif x < 0: qx = -1
-    else: qx = 1
+    (qx, qy) = TransformQuadrantBasedOnDirection((x, y), 
+        sl.state.direction, self.directions)
 
-    if y == 0: qy = 0
-    elif y < 0: qy = -1
-    else: qy = 1
-
-    return (square_description[0], square_description[1], 
+    mapped_state = (square_description[0], square_description[1], 
         square_description[2], qx, qy)
+    # print (x, y), sl.state.direction, mapped_state
+    # print
+    return mapped_state
 
   def GetAllowedMoves(self, sl):
     return ['GO_LEFT', 'GO_RIGHT', 'GO_STRAIGHT']
@@ -75,6 +110,4 @@ class QuadrantView(state_mapper.StateMapper):
     elif move == 'GO_RIGHT':
       return self.directions.Reverse(go_left_direction)
     assert(false)
-
-
-      
+    return
