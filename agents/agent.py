@@ -39,7 +39,7 @@ class Agent():
   def Act(self, state, actions, reward, episode_ended):
     self.count += 1
     if self.count == 10000:
-      self.e -= self.e/5
+      self.e -= self.e/20
       self.count = 1000
 
     # epsilon-greedy
