@@ -1,71 +1,191 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Rl-snake by spranesh</title>
+<html> <head>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Rl-snake</h1>
-        <p>Reinforcement Learning applied to the Snake Game</p>
+<title>RL Snake</title> 
+<style type="text/css">
+<!--
 
-        <p class="view"><a href="https://github.com/spranesh/rl-snake">View the Project on GitHub <small>spranesh/rl-snake</small></a></p>
+li a{
+color: #989898; 
+}
+li a:visited {
+color: #989898;
+}
+
+li a:hover {
+color: #000000;
+}
+
+body{
+background: #FFFFFF;
+color: black;
+       font-family: sans-serif;
+       margin-left:0.6em;
+width:800px;
+}
+
+ul li{
+	list-style:disc;
+color: black;
+       font-size:0.9em;
+}
+
+ul ul li{
+	list-style:disc;
+color:black;
+}
+
+.heading{
+color: #1a6ed5;
+       font-size:0.95em;
+}
+
+.author{
+color: #172380;
+margin:1em;
+       margin-left:0em;
+}
+
+.enumerate{
+color: #0F386B;
+display:inline;
+}
+.version{
+color: black;
+display:inline;
+margin:0.5em;
+       margin-left:0em;
+}
+
+.date{
+color: #228a73;
+       font-size:0.9em;
+}
+
+p, ol{
+	font-size:0.9em;
+}
+
+h2, h4{
+color: #3b61c3;
+}
+
+pre{
+            background: #edf3ff;
+	    margin-top:0.7em;
+	    margin-bottom:0.7em;
+	    padding-top: 1em;
+	    padding-bottom: 1em;
+}
+
+em{
+color: #1a8a4f;
+       font-style:normal;
+       font-weight:bolder;
+}
+
+.green {
+	color: rgb(0, 0, 240);
+}
+
+.footer{
+	margin-top:1em;
+	padding-top:0.5em;
+	border-top: 1px solid #131b6f;
+	font-size:0.85em;
+}
+</style>
+
+</head>
 
 
-        <ul>
-          <li><a href="https://github.com/spranesh/rl-snake/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/spranesh/rl-snake/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/spranesh/rl-snake">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<body> 
+<h2> RL Snake </h2>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<h4>Reinforcement Learning in the Classic Snake Arcade Game.</h4>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<div class ="author">Pranesh Srinivasan</div>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<div class = "heading">Description</div>
+<p> Reinforcement Learning (<a
+href="http://en.wikipedia.org/wiki/Q-learning">Q-Learning</a> & <a
+href="http://en.wikipedia.org/wiki/SARSA">SARSA</a>) applied to the snake game
+--- My course project for the Reinforcement Learning course.
+</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<div class = "heading">Why is it not just another snake bot?</div>
+<p>
+In Reinforcement Learning, one does not <i>teach</i> the agent (bot). The
+agent's controller (the environment) merely tells it what is good, and what is
+bad. This particular agent has been told that:
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<ul>
+<li> Getting food is good. +500 points to the snake. </li>
+<li> Hitting a wall or itself is bad. -100 reward to it.</li>
+<li> Anything else is also (relatively) bad. We want to get to the food
+quickly. (-10 to the snake for every move where none of the above happens).<em>[1]</em> </li>
+</ul>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+</p><p>
+The snake then learns on its own, through a process of trial-and-error across
+many games, what it should do, and what it should not. It is kind of like human
+learning<em>[2]</em>.
+</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<div class = "heading">How does it work?</div>
+<p> Source can be found on <a href="http://www.github.com/spranesh/rl-snake">github</a>. </p>To download simply run
+<pre>
+$ git clone https://github.com/spranesh/rl-snake.git 
+</pre>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p> Watch these three (bad quality) screencasts for examples:
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<ul>
+<li> <a href="plain.gif">Plain Old Snake.</a> (Q Learning)</li>
+<li> <a href="middle_wall.gif">Snake with a small wall in between.</a> (Q Learning)</li>
+<li> <a href="vertical-maze.gif">A crazy vertical maze.</a> (SARSA)</li>
+</ul>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/spranesh">spranesh</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
-</html>
+<br />
+<br />
+<div class="heading"> Observations </div>
+<p>
+SARSA seems to peform better. It however needs quite a lot more training. The
+new <tt>long_train.sara training</tt> file in the source, was the result of
+training SARSA for 8 hours (~30,000 games). Q-Learning does well (compared to
+SARSA), when the training period is short - 15-20 minutes on my machine seems
+ideal.
+
+</p><p>
+Both algorithms show a bit of learning, even with just 2-3 (~100 games) minutes
+of training. This is mainly due to the compact state space used
+(<tt>state_mappers/quadrant_view.py</tt>). It has been seen to be sufficient to
+merely store which quadrant (relative to the snake) the food is in. Exact
+position, leads to a huge increase in the size of the state space, decreasing
+the rate of learning.
+
+</p><p>
+Note: Unlike most RL Algorithms, a completely relative state space has been
+used for this problem. The world changes with respect to the snake's head.
+</p>
+
+<br />
+<br />
+<small>
+<p>
+<em>[1]</em>:Thanks to <a href="http://www.facebook.com/Prashanth.Srinivasan0">Prashanth</a>
+for seeing through a reward bug that I was banging my head on.
+</p><p>
+<em>[2]</em>: Strong correlations have been observed by the models reinforcement
+learning uses, and the reinforcement happening in our neurons. <a
+href="http://en.wikipedia.org/wiki/Temporal_difference_learning">TD
+Learning</a> is one such model.
+</p>
+
+<br />
+<br />
+<br />
+
+<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.cse.iitm.ac.in%2F%7Espranesh%2Fprojects%2Frl-snake%2F&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>
+
+</body></html>
